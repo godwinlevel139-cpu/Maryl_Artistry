@@ -210,7 +210,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 <div class="toast" id="toast"></div>
 
 <script>
-(function(){
+document.addEventListener("DOMContentLoaded", function () {
 'use strict';
 var SK='maryl_data';
 var ADMIN_USER='maryl_admin';
@@ -272,7 +272,7 @@ document.getElementById('publishBtn').addEventListener('click',function(){
 function exportData(){var data=getData();var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='maryl_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();showToast('Backup exported!','ok');}
 function importData(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var data=JSON.parse(e.target.result);if(!Array.isArray(data.gallery)||!Array.isArray(data.videos)||!Array.isArray(data.reviews))throw new Error('bad');saveData(data);renderAll();showToast('Data imported!','ok');}catch(err){showToast('Invalid backup file','error');}};reader.readAsText(file);event.target.value='';}
 if(isLoggedIn()){showDashboard();}
-})();
+});
 </script>
 </body>
 </html>
