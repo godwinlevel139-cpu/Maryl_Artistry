@@ -1,237 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maryl Artistry</title>
+<script>
+(function(){
+"use strict";
 
-<link rel="icon" href="images/logo.png">
+const KEY = "maryl_data";
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --gold:#C9A84C;
-  --dark:#0f0b05;
-  --cream:#faf7f2;
-  --text:#2b1d05;
+/* STORAGE */
+function getData(){
+try{
+return JSON.parse(localStorage.getItem(KEY)) || {
+gallery:[],
+videos:[],
+reviews:[],
+portrait:""
+};
+}catch(e){
+return {gallery:[],videos:[],reviews:[],portrait:""};
+}
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+/* =========================
+   REVIEWS (APPROVED ONLY)
+========================= */
+function loadReviews(){
+const data = getData();
+const container = document.querySelector(".rev-grid");
 
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--cream);
+if(!container) return;
+
+const approved = data.reviews.filter(r => r.approved);
+
+if(!approved.length){
+container.innerHTML = `
+<div class="rev-card">
+<p style="color:rgba(255,255,255,0.6)">
+No reviews yet — be the first to leave one 💄
+</p>
+</div>`;
+return;
 }
 
-/* NAV */
-nav{
-  position:fixed;
-  top:0;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  padding:1rem 2rem;
-  background:white;
-  border-bottom:1px solid #eee;
-}
+container.innerHTML = approved.map(r => `
+<div class="rev-card">
+<div class="rev-quote">“</div>
 
-nav img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-}
-
-nav a{
-  text-decoration:none;
-  color:#555;
-  margin-left:20px;
-  font-size:14px;
-}
-
-/* HERO */
-.hero{
-  height:100vh;
-  background:linear-gradient(#000000aa,#000000aa), url("https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9");
-  background-size:cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:white;
-}
-
-.hero h1{
-  font-size:50px;
-  font-family:'Cormorant Garamond',serif;
-}
-
-.hero button{
-  margin-top:20px;
-  padding:12px 30px;
-  border:none;
-  background:var(--gold);
-  cursor:pointer;
-}
-
-/* SECTION */
-section{
-  padding:80px 20px;
-  max-width:1100px;
-  margin:auto;
-}
-
-/* GALLERY */
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:10px;
-}
-
-.gallery-grid img{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-}
-
-/* VIDEOS */
-.tut-grid iframe{
-  width:100%;
-  height:200px;
-}
-
-/* REVIEWS */
-.rev-card{
-  border:1px solid #ddd;
-  padding:20px;
-  margin-bottom:15px;
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:20px;
-  background:#111;
-  color:#aaa;
-}
-</style>
-</head>
-
-<body>
-
-<!-- NAV -->
-<nav>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <img src="images/logo.png">
-    <strong>Maryl Artistry</strong>
-  </div>
-
-  <div>
-    <a href="#gallery">Gallery</a>
-    <a href="#videos">Tutorials</a>
-    <a href="#reviews">Reviews</a>
-    <a href="admin.html">Admin</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div>
-    <h1>Luxury Makeup Experience</h1>
-    <p>Beauty redefined with elegance</p>
-    <button onclick="scrollToGallery()">View Work</button>
-  </div>
+<div class="stars">
+${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}
 </div>
 
-<!-- GALLERY -->
-<section id="gallery">
-  <h2>Gallery</h2>
-  <div class="gallery-grid"></div>
-</section>
+<p class="rev-text">${r.review}</p>
 
-<!-- VIDEOS -->
-<section id="videos">
-  <h2>Tutorials</h2>
-  <div class="tut-grid"></div>
-</section>
-
-<!-- REVIEWS -->
-<section id="reviews">
-  <h2>Client Reviews</h2>
-  <div class="rev-grid"></div>
-</section>
-
-<footer>
-  © 2026 Maryl Artistry
-</footer>
-
-<script>
-
-/* GET DATA */
-function getData(){
-  return JSON.parse(localStorage.getItem("data")) || {
-    gallery:[],
-    videos:[],
-    reviews:[]
-  };
+<div class="rev-author">
+<div class="rev-avatar">
+${r.name.charAt(0).toUpperCase()}
+</div>
+<div>
+<div class="rev-name">${r.name}</div>
+<div class="rev-occ">${r.service}</div>
+</div>
+</div>
+</div>
+`).join("");
 }
 
-/* LOAD GALLERY */
+/* =========================
+   GALLERY
+========================= */
 function loadGallery(){
-  const data = getData();
-  const grid = document.querySelector(".gallery-grid");
+const data = getData();
+const grid = document.querySelector(".gallery-grid");
 
-  grid.innerHTML = "";
+if(!grid) return;
 
-  data.gallery.forEach(img=>{
-    grid.innerHTML += `<img src="${img}">`;
-  });
+if(!data.gallery.length){
+grid.innerHTML = `<div class="g-empty">No images yet</div>`;
+return;
 }
 
-/* LOAD VIDEOS */
+grid.innerHTML = data.gallery.map((img,i)=>`
+<div class="gallery-item ${i===0?'featured':''}">
+<img src="${img}">
+<div class="g-hover"><span>View</span></div>
+</div>
+`).join("");
+}
+
+/* =========================
+   VIDEOS
+========================= */
 function loadVideos(){
-  const data = getData();
-  const wrap = document.querySelector(".tut-grid");
+const data = getData();
+const grid = document.querySelector(".tut-grid");
 
-  wrap.innerHTML = "";
+if(!grid) return;
 
-  data.videos.forEach(url=>{
-    let id = url.split("v=")[1];
-    if(!id) return;
-
-    wrap.innerHTML += `
-      <iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>
-    `;
-  });
+if(!data.videos.length){
+grid.innerHTML = `<div class="no-vids">No tutorials yet</div>`;
+return;
 }
 
-/* LOAD REVIEWS */
-function loadReviews(){
-  const data = getData();
-  const grid = document.querySelector(".rev-grid");
-
-  grid.innerHTML = "";
-
-  data.reviews.forEach(r=>{
-    grid.innerHTML += `
-      <div class="rev-card">
-        <strong>${r.name}</strong>
-        <p>${r.text}</p>
-      </div>
-    `;
-  });
+grid.innerHTML = data.videos.map(v=>`
+<div class="tut-card">
+<div class="tut-thumb">
+<iframe src="https://www.youtube.com/embed/${getYouTubeID(v)}" allowfullscreen></iframe>
+</div>
+<div class="tut-info">
+<div class="tut-name">Makeup Tutorial</div>
+</div>
+</div>
+`).join("");
 }
 
-function scrollToGallery(){
-  document.getElementById("gallery").scrollIntoView({behavior:"smooth"});
+function getYouTubeID(url){
+let reg = /(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
+let match = url.match(reg);
+return match ? match[1] : url;
 }
 
-/* INIT */
+/* =========================
+   PORTRAIT (ABOUT IMAGE)
+========================= */
+function loadPortrait(){
+const data = getData();
+const img = document.querySelector(".about-img-wrap img");
+
+if(img && data.portrait){
+img.src = data.portrait;
+}
+}
+
+/* =========================
+   INIT
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+loadReviews();
 loadGallery();
 loadVideos();
-loadReviews();
+loadPortrait();
+});
 
+})();
 </script>
-
-</body>
-</html>
