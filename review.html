@@ -5,239 +5,180 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leave a Review — Maryl_Artistry</title>
 
+<!-- FIXED: consistent logo path -->
 <link rel="icon" href="images/logo.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-:root{
---gold:#C9A84C;--gold-light:#E8D5A3;--gold-dark:#8B6914;
---cream:#FAF7F2;--dark:#1A1208;--text:#2C1F06;
---muted:#7A6840;--white:#fff;--border:rgba(201,168,76,0.25);
---pink:#F9EEE8;--red:#c0392b;
-}
-
+:root{--gold:#C9A84C;--gold-light:#E8D5A3;--gold-dark:#8B6914;--cream:#FAF7F2;--dark:#1A1208;--text:#2C1F06;--muted:#7A6840;--white:#fff;--border:rgba(201,168,76,0.25);--pink:#F9EEE8;--red:#c0392b;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);}
 
 /* TOP BAR */
-.top-bar{
-background:var(--dark);
-padding:1rem 2rem;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.top-logo{
-display:flex;
-align-items:center;
-gap:0.6rem;
-text-decoration:none;
-}
-
-.top-logo img{
-width:38px;height:38px;border-radius:50%;
-border:1.5px solid var(--gold);
-}
-
-.top-logo span{
-font-family:'Cormorant Garamond',serif;
-color:var(--gold-light);
-font-size:1.2rem;
-}
-
-.top-back{
-color:#bbb;
-text-decoration:none;
-font-size:0.75rem;
-letter-spacing:0.1em;
-text-transform:uppercase;
-}
-
+.top-bar{background:var(--dark);padding:0.8rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+.top-logo{display:flex;align-items:center;gap:0.7rem;text-decoration:none;}
+.top-logo img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(201,168,76,0.6);}
+.top-logo span{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--gold-light);}
+.top-back{color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;}
 .top-back:hover{color:var(--gold);}
 
 /* HERO */
-.rev-hero{
-background:linear-gradient(160deg,#1A1208,#3D2E0E);
-text-align:center;
-padding:4rem 2rem;
-}
-
-.hero-logo{
-width:100px;height:100px;border-radius:50%;
-border:2px solid var(--gold);
-margin-bottom:1rem;
-animation:glow 3s infinite;
-}
-
-@keyframes glow{
-0%,100%{box-shadow:0 0 20px rgba(201,168,76,0.2);}
-50%{box-shadow:0 0 60px rgba(201,168,76,0.5);}
-}
-
-.rev-title{
-font-family:'Cormorant Garamond',serif;
-font-size:2.5rem;
-color:white;
-}
-
-.rev-title em{color:var(--gold-light);}
-
-.rev-sub{
-color:#ccc;
-max-width:500px;
-margin:1rem auto 0;
-}
+.rev-hero{background:linear-gradient(160deg,#1A1208 0%,#3D2E0E 50%,#1A1208 100%);text-align:center;padding:4rem 2rem;}
+.hero-logo{width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.55);}
+.rev-title{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:white;}
+.rev-sub{color:rgba(255,255,255,0.6);}
 
 /* FORM */
-.container{
-max-width:520px;
-margin:3rem auto;
-padding:2rem;
-background:white;
-border:1px solid var(--border);
-}
-
-/* STARS */
-.star-row{
-display:flex;
-flex-direction:row-reverse;
-justify-content:flex-end;
-}
-
-.star-row input{display:none;}
-
-.star-row label{
-font-size:2.2rem;
-color:#ddd;
-cursor:pointer;
-}
-
-.star-row input:checked ~ label,
-.star-row label:hover,
-.star-row label:hover ~ label{
-color:var(--gold);
-}
-
-/* INPUTS */
-input,select,textarea{
-width:100%;
-padding:0.8rem;
-margin-top:0.4rem;
-border:1px solid var(--border);
-}
-
+.rev-body{max-width:600px;margin:auto;padding:3rem 1.5rem;}
+.form-group{margin-bottom:1.2rem;}
+input,select,textarea{width:100%;padding:0.8rem;border:1px solid var(--border);}
 textarea{min-height:120px;}
 
-/* BUTTON */
-.btn{
-width:100%;
-margin-top:1.5rem;
-padding:1rem;
-background:var(--gold);
-border:none;
-cursor:pointer;
-}
+.btn-submit{width:100%;background:var(--gold);border:none;padding:1rem;cursor:pointer;}
+.btn-submit:disabled{opacity:0.6;cursor:not-allowed;}
 
-.btn:hover{background:var(--gold-dark);color:white;}
+.err{border-color:var(--red);}
+.err-msg{color:var(--red);font-size:0.8rem;display:none;}
+.err-msg.show{display:block;}
+
+.star-row label{font-size:2rem;cursor:pointer;color:#ccc;}
+.star-row input{display:none;}
+.star-row input:checked ~ label{color:var(--gold);}
 
 /* SUCCESS */
-.success{
-display:none;
-text-align:center;
-}
+.success-screen{display:none;text-align:center;padding:2rem;}
+.success-screen.show{display:block;}
 
-.success.show{display:block;}
-
+footer{background:var(--dark);color:white;text-align:center;padding:1rem;}
 </style>
 </head>
 
 <body>
 
+<!-- TOP -->
 <div class="top-bar">
-<a href="index.html" class="top-logo">
-<img src="images/logo.png">
-<span>Maryl_Artistry</span>
-</a>
-<a href="index.html" class="top-back">← Back</a>
+  <a href="index.html" class="top-logo">
+    <img src="images/logo.png">
+    <span>Maryl_Artistry</span>
+  </a>
+  <a href="index.html" class="top-back">← Back</a>
 </div>
 
+<!-- HERO -->
 <div class="rev-hero">
-<img src="images/logo.png" class="hero-logo">
-<h1 class="rev-title">Leave a <em>Review</em></h1>
-<p class="rev-sub">Tell us about your experience</p>
+  <img src="images/logo.png" class="hero-logo">
+  <h1 class="rev-title">Leave a Review</h1>
+  <p class="rev-sub">We value your feedback</p>
 </div>
 
-<div class="container">
+<!-- BODY -->
+<div class="rev-body">
 
-<div id="formBox">
+<div class="success-screen" id="successScreen">
+  <h2>Thank You 💄</h2>
+  <p>Your review has been submitted!</p>
+  <a href="index.html">Back to site</a>
+</div>
 
+<div id="formWrap">
+
+<div class="form-group">
+<label>Rating *</label>
 <div class="star-row">
-<input type="radio" name="rating" value="5" id="s5"><label for="s5">★</label>
-<input type="radio" name="rating" value="4" id="s4"><label for="s4">★</label>
-<input type="radio" name="rating" value="3" id="s3"><label for="s3">★</label>
-<input type="radio" name="rating" value="2" id="s2"><label for="s2">★</label>
-<input type="radio" name="rating" value="1" id="s1"><label for="s1">★</label>
+<input type="radio" id="s5" name="rating" value="5"><label for="s5">★</label>
+<input type="radio" id="s4" name="rating" value="4"><label for="s4">★</label>
+<input type="radio" id="s3" name="rating" value="3"><label for="s3">★</label>
+<input type="radio" id="s2" name="rating" value="2"><label for="s2">★</label>
+<input type="radio" id="s1" name="rating" value="1"><label for="s1">★</label>
+</div>
+<div class="err-msg" id="e_rating">Select rating</div>
 </div>
 
-<input id="name" placeholder="Your name">
+<div class="form-group">
+<label>Name *</label>
+<input type="text" id="name">
+<div class="err-msg" id="e_name">Enter name</div>
+</div>
 
+<div class="form-group">
+<label>Service *</label>
 <select id="service">
-<option value="">Select service</option>
+<option value="">Select</option>
 <option>Bridal</option>
 <option>Birthday</option>
 <option>Photoshoot</option>
 </select>
-
-<textarea id="review" placeholder="Write your review..."></textarea>
-
-<button class="btn" id="submitBtn">Submit Review</button>
-
+<div class="err-msg" id="e_service">Select service</div>
 </div>
 
-<div class="success" id="successBox">
-<h2>Thank You 💄</h2>
-<p>Your review is awaiting admin approval.</p>
+<div class="form-group">
+<label>Review *</label>
+<textarea id="review"></textarea>
+<div class="err-msg" id="e_review">Min 20 characters</div>
 </div>
 
+<button class="btn-submit" id="submitBtn">Submit</button>
+
 </div>
+</div>
+
+<footer>© Maryl_Artistry</footer>
 
 <script>
-const KEY = "maryl_data";
+const KEY="maryl_data";
 
 function getData(){
-return JSON.parse(localStorage.getItem(KEY)) || {reviews:[]};
+  try{
+    return JSON.parse(localStorage.getItem(KEY)) || {reviews:[]};
+  }catch{
+    return {reviews:[]};
+  }
 }
 
 function saveData(d){
-localStorage.setItem(KEY, JSON.stringify(d));
+  localStorage.setItem(KEY, JSON.stringify(d));
 }
 
-document.getElementById("submitBtn").onclick = function(){
+document.getElementById("submitBtn").onclick=function(){
+  let name=document.getElementById("name").value.trim();
+  let service=document.getElementById("service").value;
+  let review=document.getElementById("review").value.trim();
+  let rating=document.querySelector('input[name="rating"]:checked');
 
-let name = document.getElementById("name").value.trim();
-let review = document.getElementById("review").value.trim();
-let service = document.getElementById("service").value;
-let ratingEl = document.querySelector("input[name='rating']:checked");
+  let ok=true;
 
-if(!name || !review || !service || !ratingEl){
-alert("Please fill everything");
-return;
-}
+  function err(id,cond){
+    let e=document.getElementById(id);
+    if(cond){e.classList.add("show"); ok=false;}
+    else e.classList.remove("show");
+  }
 
-let data = getData();
+  err("e_name",!name);
+  err("e_service",!service);
+  err("e_review",review.length<20);
+  err("e_rating",!rating);
 
-data.reviews.push({
-name, review, service,
-rating: ratingEl.value,
-approved:false
-});
+  if(!ok) return;
 
-saveData(data);
+  let btn=this;
+  btn.disabled=true;
+  btn.innerText="Submitting...";
 
-document.getElementById("formBox").style.display="none";
-document.getElementById("successBox").classList.add("show");
+  let data=getData();
+  data.reviews.push({
+    name,
+    service,
+    review,
+    rating:parseInt(rating.value),
+    approved:false,
+    date:new Date().toISOString()
+  });
+
+  saveData(data);
+
+  document.getElementById("formWrap").style.display="none";
+  document.getElementById("successScreen").classList.add("show");
 };
 </script>
 
