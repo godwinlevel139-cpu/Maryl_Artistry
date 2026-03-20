@@ -3,292 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Maryl Artistry</title>
+<title>Admin Panel — Maryl_Artistry</title>
+
+<link rel="icon" href="images/logo.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 :root{
---gold:#C9A84C;
---dark:#0f0c07;
---cream:#f8f5ef;
---text:#2c1f06;
---border:rgba(201,168,76,0.2);
+--gold:#C9A84C;--cream:#FAF7F2;--dark:#1A1208;
+--text:#2C1F06;--muted:#7A6840;--white:#fff;
+--border:rgba(201,168,76,0.25);--red:#c0392b;
 }
 
-body{
-margin:0;
-font-family:'DM Sans',sans-serif;
-background:var(--cream);
-color:var(--text);
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);}
 
-/* LOGIN */
-.login{
-display:flex;
-height:100vh;
-justify-content:center;
-align-items:center;
-background:linear-gradient(160deg,#0f0c07,#2c1f06);
-}
-
-.box{
-background:white;
-padding:40px;
-width:320px;
-text-align:center;
-border-radius:8px;
-}
-
-.logo{
-width:80px;
-height:80px;
-border-radius:50%;
-object-fit:cover;
-margin-bottom:10px;
-border:2px solid var(--gold);
-}
-
-input{
-width:100%;
-padding:12px;
-margin:8px 0;
-border:1px solid var(--border);
-}
-
-button{
-width:100%;
-padding:12px;
-background:var(--gold);
-border:none;
-cursor:pointer;
-}
-
-/* DASHBOARD */
-.dashboard{
-display:none;
-}
-
-.nav{
+/* HEADER */
+.top{
 background:var(--dark);
 color:white;
-padding:10px 20px;
+padding:1rem 2rem;
 display:flex;
 justify-content:space-between;
 align-items:center;
 }
 
-.nav img{
-width:35px;
-height:35px;
-border-radius:50%;
+.logo{
+display:flex;
+align-items:center;
+gap:0.6rem;
 }
 
-.container{
-padding:20px;
-max-width:900px;
-margin:auto;
+.logo img{
+width:38px;height:38px;border-radius:50%;
+border:1.5px solid var(--gold);
 }
 
-.section{
-margin-bottom:30px;
+.logo span{
+font-family:'Cormorant Garamond',serif;
+color:var(--gold);
+font-size:1.2rem;
 }
 
-.upload{
-border:2px dashed var(--gold);
-padding:20px;
-text-align:center;
+.logout{
 cursor:pointer;
+font-size:0.8rem;
+letter-spacing:0.1em;
 }
 
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
-gap:10px;
-margin-top:10px;
-}
-
-.gallery img{
-width:100%;
-height:100px;
-object-fit:cover;
-}
-
-.item{
+/* LOGIN */
+.login{
+max-width:400px;
+margin:5rem auto;
 background:white;
-padding:10px;
+padding:2rem;
 border:1px solid var(--border);
-margin-bottom:10px;
 }
 
-.publish{
-background:black;
-color:gold;
-padding:15px;
-border:2px solid gold;
-margin-top:20px;
+.login h2{
+font-family:'Cormorant Garamond',serif;
+margin-bottom:1rem;
+}
+
+input{
+width:100%;
+padding:0.8rem;
+margin-bottom:1rem;
+border:1px solid var(--border);
+}
+
+button{
+padding:0.8rem;
+width:100%;
+background:var(--gold);
+border:none;
 cursor:pointer;
 }
+
+button:hover{background:#8B6914;color:white;}
+
+/* DASHBOARD */
+.container{
+max-width:900px;
+margin:2rem auto;
+padding:1rem;
+}
+
+.card{
+background:white;
+padding:1.5rem;
+margin-bottom:1rem;
+border:1px solid var(--border);
+}
+
+.actions{
+display:flex;
+gap:0.5rem;
+margin-top:1rem;
+}
+
+.approve{background:green;color:white;}
+.delete{background:var(--red);color:white;}
+
+.badge{
+font-size:0.7rem;
+padding:0.2rem 0.6rem;
+border:1px solid var(--border);
+margin-left:0.5rem;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div class="login" id="loginScreen">
-<div class="box">
-<img src="logo.png" class="logo">
-<h2>Admin Login</h2>
-<input id="user" placeholder="Username">
-<input id="pass" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
+<!-- HEADER -->
+<div class="top">
+  <div class="logo">
+    <img src="images/logo.png">
+    <span>Admin Panel</span>
+  </div>
+  <div class="logout" onclick="logout()">Logout</div>
 </div>
+
+<!-- LOGIN -->
+<div class="login" id="loginBox">
+  <h2>Admin Login</h2>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
 </div>
 
 <!-- DASHBOARD -->
-<div class="dashboard" id="dash">
-
-<div class="nav">
-<div>
-<img src="logo.png">
-<span> Maryl Artistry</span>
-</div>
-<button onclick="logout()">Logout</button>
-</div>
-
-<div class="container">
-
-<!-- GALLERY -->
-<div class="section">
-<h3>Gallery</h3>
-<div class="upload" onclick="fileInput.click()">Click to upload</div>
-<input type="file" id="fileInput" multiple style="display:none">
-<div class="gallery" id="gallery"></div>
-</div>
-
-<!-- VIDEOS -->
-<div class="section">
-<h3>Videos</h3>
-<input id="videoUrl" placeholder="Paste YouTube link">
-<button onclick="addVideo()">Add Video</button>
-<div id="videos"></div>
-</div>
-
-<!-- REVIEWS -->
-<div class="section">
-<h3>Reviews</h3>
-<div id="reviews"></div>
-</div>
-
-<button class="publish" onclick="publish()">Publish Website</button>
-
-</div>
-</div>
+<div class="container" id="dashboard" style="display:none;"></div>
 
 <script>
-const ADMIN_USER="maryl_admin";
-const ADMIN_PASS="Artistry2025";
+const KEY = "maryl_data";
+const USER = "admin";
+const PASS = "1234";
 
-let data=JSON.parse(localStorage.getItem("data"))||{
-gallery:[],
-videos:[],
-reviews:[]
-};
-
-function save(){
-localStorage.setItem("data",JSON.stringify(data));
+/* STORAGE */
+function getData(){
+return JSON.parse(localStorage.getItem(KEY)) || {reviews:[]};
 }
 
-function login(){
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
+function saveData(d){
+localStorage.setItem(KEY, JSON.stringify(d));
+}
 
-if(u===ADMIN_USER && p===ADMIN_PASS){
-document.getElementById("loginScreen").style.display="none";
-document.getElementById("dash").style.display="block";
-render();
+/* LOGIN */
+function login(){
+let u = document.getElementById("user").value;
+let p = document.getElementById("pass").value;
+
+if(u===USER && p===PASS){
+localStorage.setItem("admin_logged", "true");
+init();
 }else{
 alert("Wrong login");
 }
 }
 
 function logout(){
+localStorage.removeItem("admin_logged");
 location.reload();
 }
 
-/* GALLERY */
-fileInput.onchange=function(e){
-Array.from(e.target.files).forEach(file=>{
-let reader=new FileReader();
-reader.onload=function(){
-data.gallery.push(reader.result);
-save();
-render();
-};
-reader.readAsDataURL(file);
-});
-};
+/* INIT */
+function init(){
+if(localStorage.getItem("admin_logged")!=="true") return;
 
-function renderGallery(){
-let g=document.getElementById("gallery");
-g.innerHTML="";
-data.gallery.forEach((img,i)=>{
-let el=document.createElement("div");
-el.innerHTML=`<img src="${img}"><button onclick="delImg(${i})">X</button>`;
-g.appendChild(el);
-});
-}
+document.getElementById("loginBox").style.display="none";
+document.getElementById("dashboard").style.display="block";
 
-function delImg(i){
-data.gallery.splice(i,1);
-save();
 render();
 }
 
-/* VIDEOS */
-function addVideo(){
-let url=document.getElementById("videoUrl").value;
-data.videos.push(url);
-save();
-render();
-}
-
-function renderVideos(){
-let v=document.getElementById("videos");
-v.innerHTML="";
-data.videos.forEach((vid,i)=>{
-v.innerHTML+=`<div class="item">${vid} <button onclick="delVid(${i})">X</button></div>`;
-});
-}
-
-function delVid(i){
-data.videos.splice(i,1);
-save();
-render();
-}
-
-/* REVIEWS */
-function renderReviews(){
-let r=document.getElementById("reviews");
-r.innerHTML="No review system connected yet";
-}
-
-/* PUBLISH */
-function publish(){
-let html=localStorage.getItem("data");
-let blob=new Blob([html],{type:"text/plain"});
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="data.json";
-a.click();
-alert("Upload data.json to your site");
-}
-
+/* RENDER */
 function render(){
-renderGallery();
-renderVideos();
-renderReviews();
+let data = getData();
+let box = document.getElementById("dashboard");
+
+if(!data.reviews.length){
+box.innerHTML = "<p>No reviews yet</p>";
+return;
 }
+
+box.innerHTML = data.reviews.map((r,i)=>`
+<div class="card">
+<strong>${r.name}</strong> — ${r.service}
+<span class="badge">${r.approved ? "Approved" : "Pending"}</span>
+
+<p style="margin-top:0.5rem">${r.review}</p>
+
+<div class="actions">
+<button class="approve" onclick="approve(${i})">Approve</button>
+<button class="delete" onclick="del(${i})">Delete</button>
+</div>
+</div>
+`).join('');
+}
+
+/* ACTIONS */
+function approve(i){
+let d = getData();
+d.reviews[i].approved = true;
+saveData(d);
+render();
+}
+
+function del(i){
+let d = getData();
+d.reviews.splice(i,1);
+saveData(d);
+render();
+}
+
+/* AUTO INIT */
+init();
 </script>
 
 </body>
